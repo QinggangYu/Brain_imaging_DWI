@@ -1,0 +1,35 @@
+for subj in `cat subid_dwi.txt`; do
+	
+	cd ${subj}/dwi
+
+	echo ${subj}
+
+	awk 'END { print NF }' ${subj}_dwi80.bval
+
+	cd ../..
+
+done
+
+
+for subj in `cat subid_dwi81.txt`; do
+
+	cd ${subj}/dwi
+
+	sed -r 's/.{9}$//' ${subj}_dwi.bvec >> ${subj}_dwi80.bvec
+
+	sed -r 's/.{11}$//' ${subj}_dwi.bval >> ${subj}_dwi80.bval
+
+	cd ../..
+
+done
+
+
+for subj in `cat subid_dwi81.txt`; do
+
+	cd ${subj}/dwi
+
+	fslroi ${subj}_dwi.nii.gz {subj}_dwi80.nii.gz 0 80
+
+	cd ../..
+
+done
